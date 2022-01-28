@@ -1,0 +1,74 @@
+Option Explicit
+
+Sub ListItemsFromOtherInbox()
+
+    Dim ol As Outlook.Application
+    Dim ns As Outlook.Namespace
+    Dim fol As Outlook.Folder, subfol As Outlook.Folder
+    Dim i As Object
+    Dim mi As Outlook.MailItem
+    
+    Set ol = New Outlook.Application
+    Set ns = ol.GetNamespace("MAPI")
+    
+'    For Each fol In ns.Folders
+'        Debug.Print fol.FolderPath, fol.Name, fol.Items.Count
+'
+'        For Each subfol In fol.Folders
+'            Debug.Print vbTab, subfol.Name, subfol.Items.Count
+'        Next subfol
+'    Next fol
+    
+    Set fol = ns.Folders("Trainee").Folders("Inbox")
+
+    Debug.Print fol.FolderPath, fol.Items.Count
+
+    For Each i In fol.Items
+        If i.Class = olMail Then
+
+            Set mi = i
+
+            Debug.Print vbTab, mi.Subject, mi.SenderName, mi.ReceivedTime
+        End If
+    Next i
+    
+End Sub
+
+Sub GetInboxUsingStores()
+
+    Dim ol As Outlook.Application
+    Dim ns As Outlook.Namespace
+    Dim fol As Outlook.Folder
+    Dim i As Object
+    Dim mi As Outlook.MailItem
+    Dim st As Outlook.Store
+    
+    Set ol = New Outlook.Application
+    Set ns = ol.GetNamespace("MAPI")
+    
+'    For Each st In ns.Stores
+'        Debug.Print st.DisplayName
+'    Next st
+
+    Set st = ns.Stores("Trainee")
+    
+    Set fol = st.GetDefaultFolder(olFolderInbox)
+    
+    Debug.Print fol.FolderPath, fol.Items.Count
+
+    For Each i In fol.Items
+        If i.Class = olMail Then
+
+            Set mi = i
+
+            Debug.Print vbTab, mi.Subject, mi.SenderName, mi.ReceivedTime
+        End If
+    Next i
+    
+End Sub
+
+
+
+
+
+
